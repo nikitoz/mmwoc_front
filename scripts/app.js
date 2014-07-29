@@ -8,6 +8,7 @@ app.launcher = new function() {
 			type: "GET",
 			url: "http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930",
 			success: this.buildChart,
+			dataType: 'jsonp',
 			error: function(){
 				console.log("There is some problem with getting data from server");
 			},
