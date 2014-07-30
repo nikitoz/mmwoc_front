@@ -27,7 +27,7 @@ app.launcher = new function() {
 				text: 'Source: Wikipedia.org'
 			},
 			xAxis: {
-				categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+				categories: data.categories,
 				title: {
 					text: null
 				}
