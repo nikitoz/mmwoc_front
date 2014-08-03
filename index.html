@@ -2,16 +2,18 @@
 <html>
 	<head>
 		<title>mmwoc</title>
+		<meta charset="UTF-8">
 	</head>
 	<body>
 		<div>
 			<label>Select site</label>
 			<select id="site_select" onchange="app.launcher.onSiteSelected()">
+				<option value="test">Test</option>
 				<option value="Lenta">Lenta.ru</option>
 				<option value="Vesti">Vesti.ru</option>
 			</select>
 		</div>
-		<div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">crap</div>
+		<div id="container" style="min-width: 310px; max-width: 800px; height: 800px; margin: 0 auto">please wait</div>
 
 		<script src="./scripts/lib/jquery.js"></script>
 		<script src="./scripts/lib/highcharts/highcharts.js"></script>
