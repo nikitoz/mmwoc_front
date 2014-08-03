@@ -42,7 +42,7 @@ app.launcher = new function() {
 
 	this.buildChart = function(data){
 		console.log(data.words)
-		console.log(data.occurances)
+		console.log(data.occurrences)
 		$(document.getElementById('container')).highcharts({
 			chart: {
 				type: 'bar'
@@ -62,7 +62,7 @@ app.launcher = new function() {
 			yAxis: {
 				min: 0,
 				title: {
-					text: 'Word occurances',
+					text: 'Word occurrences',
 					align: 'high'
 				},
 				labels: {
@@ -70,7 +70,7 @@ app.launcher = new function() {
 				}
 			},
 			tooltip: {
-				valueSuffix: ' word occurances'
+				valueSuffix: ' word occurrences'
 			},
 			plotOptions: {
 				bar: {
@@ -93,7 +93,7 @@ app.launcher = new function() {
 			credits: {
 				enabled: false
 			},
-			series: [{ name : 'Word occurances', data : data.occurances }]
+			series: [{ name : 'Word occurences', data : data.occurrences }]
 		}).bind(this);
 	};
 }();
