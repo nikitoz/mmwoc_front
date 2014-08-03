@@ -4,11 +4,12 @@ app.launcher = new function() {
 	var self = this;
 	
 	var sites = {
-		'Lenta' : { url : 'Lenta.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' },
-		'Vesti' : { url : 'Vesti.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' }
+		'test'  : { url : '', data_source : 'https://nikitoz.cloudant.com/test/455144bd976624b0c9f7fb9cd530eb4d'},
+	/*	'Lenta' : { url : 'Lenta.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' },
+		'Vesti' : { url : 'Vesti.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' }*/
 	};
 
-	var current_site = 'Lenta';
+	var current_site = 'test';
 	
 	this.setCurrentSite = function(site_name) {
 		if (site_name in sites)
@@ -40,6 +41,8 @@ app.launcher = new function() {
 	};
 
 	this.buildChart = function(data){
+		console.log(data.words)
+		console.log(data.occurances)
 		$(document.getElementById('container')).highcharts({
 			chart: {
 				type: 'bar'
@@ -48,10 +51,10 @@ app.launcher = new function() {
 				text: 'pew-pew'
 			},
 			subtitle: {
-				text: 'Source: Wikipedia.org'
+				text: ''
 			},
 			xAxis: {
-				categories: data.categories,
+				categories: data.words,
 				title: {
 					text: null
 				}
@@ -59,7 +62,7 @@ app.launcher = new function() {
 			yAxis: {
 				min: 0,
 				title: {
-					text: 'Population (millions)',
+					text: 'Word occurances',
 					align: 'high'
 				},
 				labels: {
@@ -67,7 +70,7 @@ app.launcher = new function() {
 				}
 			},
 			tooltip: {
-				valueSuffix: ' millions'
+				valueSuffix: ' word occurances'
 			},
 			plotOptions: {
 				bar: {
@@ -76,7 +79,7 @@ app.launcher = new function() {
 					}
 				}
 			},
-			legend: {
+			/*legend: {
 				layout: 'vertical',
 				align: 'right',
 				verticalAlign: 'top',
@@ -85,12 +88,12 @@ app.launcher = new function() {
 				floating: true,
 				borderWidth: 1,
 				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor || '#FFFFFF'),
-				shadow: true
-			},
+				shadow: false
+			},*/
 			credits: {
 				enabled: false
 			},
-			series: data.series
+			series: [{ name : 'Word occurances', data : data.occurances }]
 		}).bind(this);
 	};
 }();
