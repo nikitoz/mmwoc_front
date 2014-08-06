@@ -97,6 +97,15 @@ app.launcher = new function() {
 		}).bind(this);
 	};
 }();
-
+$('.datepick').pickmeup({
+		format          : 'd.m.y',
+		select_year     : false,
+		select_month    : false,
+		position		: 'right',
+		hide_on_select	: true,
+		min             : new Date(2014, 7, 5, 0, 0,0,0),
+		selected        : true,
+		date            : new Date(2014, 7, 8, 0,0,0,0),
+	});
 // launch
 app.launcher.getDataFromServer();
