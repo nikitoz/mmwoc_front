@@ -40,6 +40,27 @@ app.launcher = new function() {
 		});
 	};
 
+	this.init = function() {
+		var today = new Date();
+		var pick = $('.datepick').pickmeup({
+			format          : 'd.m.Y',
+			select_year     : false,
+			select_month    : false,
+			position		: 'right',
+			hide_on_select	: true,
+			min             : new Date(2014, 7, 5, 0, 0, 0, 0),
+			selected        : true,
+			date            : today,
+			change			: this.getDataFromServer,
+		});
+		$('.datepick').val(this.date());
+		console.log(this.date().replace(/\./g, '_'));
+	};
+
+	this.date = function() {
+		return $('.datepick').pickmeup('get_date', true);
+	};
+
 	this.buildChart = function(data){
 		console.log(data.words)
 		console.log(data.occurrences)
@@ -79,17 +100,6 @@ app.launcher = new function() {
 					}
 				}
 			},
-			/*legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 100,
-				floating: true,
-				borderWidth: 1,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor || '#FFFFFF'),
-				shadow: false
-			},*/
 			credits: {
 				enabled: false
 			},
@@ -97,15 +107,6 @@ app.launcher = new function() {
 		}).bind(this);
 	};
 }();
-$('.datepick').pickmeup({
-		format          : 'd.m.y',
-		select_year     : false,
-		select_month    : false,
-		position		: 'right',
-		hide_on_select	: true,
-		min             : new Date(2014, 7, 5, 0, 0,0,0),
-		selected        : true,
-		date            : new Date(2014, 7, 8, 0,0,0,0),
-	});
+app.launcher.init();
 // launch
 app.launcher.getDataFromServer();
