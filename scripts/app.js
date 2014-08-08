@@ -20,15 +20,15 @@ app.launcher = new function() {
 
 	this.onSiteSelected = function() {
 		var site_select = document.getElementById("site_select");
-		self.show(site_select.options[site_select.selectedIndex].value);
-	}
-
-	this.show = function(site_name) {
-		self.setCurrentSite(site_name);
-		self.getDataFromServer();
+		self.setCurrentSite(site_select.options[site_select.selectedIndex].value);
+		self.show();
 	};
 
-	this.getDataFromServer = function(){
+	this.onDateSelected = function() {
+		console.log(self.date());
+	};
+
+	this.show = function() {
 		$.ajax({
 			type: "GET",
 			url: sites[current_site].data_source,
@@ -49,9 +49,10 @@ app.launcher = new function() {
 			position		: 'right',
 			hide_on_select	: true,
 			min             : new Date(2014, 7, 5, 0, 0, 0, 0),
+			max             : new Date(),
 			selected        : true,
 			date            : today,
-			change			: this.getDataFromServer,
+			change			: this.onDateSelected,
 		});
 		$('.datepick').val(this.date());
 		console.log(this.date().replace(/\./g, '_'));
@@ -59,6 +60,10 @@ app.launcher = new function() {
 
 	this.date = function() {
 		return $('.datepick').pickmeup('get_date', true);
+	};
+
+	this.db_index = function() {
+		return self.sites[current_site].url + self.date().replace(/\./g, '_');
 	};
 
 	this.buildChart = function(data){
@@ -108,5 +113,4 @@ app.launcher = new function() {
 	};
 }();
 app.launcher.init();
-// launch
-app.launcher.getDataFromServer();
+app.launcher.show();
