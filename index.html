@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>mmwoc</title>
+		<title>Watmedia</title>
 		<meta charset="UTF-8">
 	</head>
 	<body>
@@ -12,7 +12,8 @@
 				<option value="Lenta">Lenta.ru</option>
 				<option value="Vesti">Vesti.ru</option>
 			</select>
-			<input type="text" value="" class="datepick"/>
+			<label>Select date</label>
+			<input type="text" class="datepick" pattern="\d\d\.\d\d\.2014" required onchange="app.launcher.onDateSelected()" />
 		</div>
 
 		<div id="container" style="min-width: 310px; max-width: 800px; height: 800px; margin: 0 auto">please wait</div>
