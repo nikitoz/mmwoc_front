@@ -2,11 +2,11 @@ var app = app || {};
 
 app.launcher = new function() {
 	var self = this;
-	
+	var data_source = 'http://flipflop.systems:27080/mmwocdb/graph/_find?';
 	var sites = {
-		'test'  : { url : '', data_source : 'https://nikitoz.cloudant.com/test/455144bd976624b0c9f7fb9cd530eb4d'},
-	/*	'Lenta' : { url : 'Lenta.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' },
-		'Vesti' : { url : 'Vesti.ru', data_source : 'http://nikitoz.cloudant.com/test/b7eced176dc69c776dd379f596228930' }*/
+		'test'  : { url : 'nikitoz.github.io/mmwoc_testpage/'},
+		'Lenta' : { url : 'lenta.ru' },
+//		'Vesti' : { url : 'Vesti.ru' }
 	};
 
 	var current_site = 'test';
@@ -26,12 +26,13 @@ app.launcher = new function() {
 
 	this.onDateSelected = function() {
 		console.log(self.date());
+		// TODO : add date filter
 	};
 
 	this.show = function() {
 		$.ajax({
 			type: "GET",
-			url: sites[current_site].data_source,
+			url: data_source + self.db_index(),
 			success: this.buildChart,
 			dataType: 'jsonp',
 			error: function(){
@@ -55,7 +56,7 @@ app.launcher = new function() {
 			change			: this.onDateSelected,
 		});
 		$('.datepick').val(this.date());
-		console.log(this.date().replace(/\./g, '_'));
+		console.log(this.date().replace(/\./g, '').replace(/_/g, ''));
 	};
 
 	this.date = function() {
@@ -63,12 +64,12 @@ app.launcher = new function() {
 	};
 
 	this.db_index = function() {
-		return self.sites[current_site].url + self.date().replace(/\./g, '_');
+		return 'criteria=' + encodeURI('{"_id" : "'+ sites[current_site].url.replace(/\//g, '').replace(/\./g, '') + '_'
+			+ self.date().replace(/\./g, '_') + '"}');
 	};
 
 	this.buildChart = function(data){
-		console.log(data.words)
-		console.log(data.occurrences)
+		console.log(data)
 		$(document.getElementById('container')).highcharts({
 			chart: {
 				type: 'bar'
@@ -80,7 +81,7 @@ app.launcher = new function() {
 				text: ''
 			},
 			xAxis: {
-				categories: data.words,
+				categories: data.results[0].data.words,
 				title: {
 					text: null
 				}
@@ -108,7 +109,7 @@ app.launcher = new function() {
 			credits: {
 				enabled: false
 			},
-			series: [{ name : 'Word occurences', data : data.occurrences }]
+			series: [{ name : 'Word occurences', data : data.results[0].data.occurrences }]
 		}).bind(this);
 	};
 }();
