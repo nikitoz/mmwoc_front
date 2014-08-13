@@ -56,7 +56,6 @@ app.launcher = new function() {
 			change			: this.onDateSelected,
 		});
 		$('.datepick').val(this.date());
-		console.log(this.date().replace(/\./g, '').replace(/_/g, ''));
 	};
 
 	this.date = function() {
