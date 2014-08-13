@@ -6,7 +6,14 @@ app.launcher = new function() {
 	var sites = {
 		'test'  : { url : 'nikitoz.github.io/mmwoc_testpage/'},
 		'Lenta' : { url : 'lenta.ru' },
-//		'Vesti' : { url : 'Vesti.ru' }
+		'Vesti' : { url : 'vesti.ru' },
+		'Ria'   : { url : 'ria.ru' },
+		'news.ru': {url : 'news.ru'},
+		'kp.ru'  : {url : 'kp.ru' },
+		'lifenews.ru' : { url : 'lifenews.ru'},
+		'russian.rt' : {url : 'russian.rt.com'},
+		'itar-tass'  : {url : 'itar-tass.com'},
+		'pravda.ru'  : { url : 'pravda.ru'}
 	};
 
 	var current_site = 'test';
