@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<div>
-			<label>Select site</label>
+			<label>Наиболее встречающиеся слова на</label>
 			<select id="site_select" onchange="app.launcher.onSiteSelected()">
 				<option value="lenta.ru">lenta.ru</option>
 				<option value="vesti.ru">vesti.ru</option>
@@ -18,10 +18,9 @@
 				<option value="itar-tass.com">itar-tass.com</option>
 				<option value="pravda.ru">pravda.ru</option>
 			</select>
-			<label>Select date</label>
-			<input type="text" class="datepick" pattern="\d\d\.\d\d\.2014" required onchange="app.launcher.onDateSelected()" />
+			<label>за</label>
+			<input type="text" size="8" class="datepick" pattern="\d\d\.\d\d\.2014" required onchange="app.launcher.onDateSelected()" />
 		</div>
-
 		<div id="container" style="min-width: 310px; max-width: 800px; height: 2000px; margin: 0 auto">no data for this site and date</div>
 		<script src="./scripts/lib/jquery.js"></script>
 		<script src="./scripts/lib/highcharts/highcharts.js"></script>
