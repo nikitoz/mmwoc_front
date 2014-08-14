@@ -4,20 +4,20 @@ app.launcher = new function() {
 	var self = this;
 	var data_source = 'http://flipflop.systems:27080/mmwocdb/graph/_find?';
 	var sites = {
-		'test'  : { url : 'nikitoz.github.io/mmwoc_testpage/'},
-		'Lenta' : { url : 'lenta.ru' },
-		'Vesti' : { url : 'vesti.ru' },
-		'news2.ru' : {url : 'news2.ru'},
-		'Ria'   : { url : 'ria.ru' },
-		'newsru.com': {url : 'newsru.com'},
-		'kp.ru'  : {url : 'kp.ru' },
-		'lifenews.ru' : { url : 'lifenews.ru'},
-		'russian.rt' : {url : 'russian.rt.com'},
-		'itar-tass'  : {url : 'itar-tass.com'},
-		'pravda.ru'  : { url : 'pravda.ru'}
+		'test'           : { url : 'nikitoz.github.io/mmwoc_testpage/'},
+		'lenta.ru'       : { url : 'lenta.ru' },
+		'vesti.ru'       : { url : 'vesti.ru' },
+		'news2.ru'       : { url : 'news2.ru'},
+		'ria.ru'         : { url : 'ria.ru' },
+		'newsru.com'     : { url : 'newsru.com'},
+		'kp.ru'          : { url : 'kp.ru' },
+		'lifenews.ru'    : { url : 'lifenews.ru'},
+		'russian.rt.com' : { url : 'russian.rt.com'},
+		'itar-tass'      : { url : 'itar-tass.com'},
+		'pravda.ru'      : { url : 'pravda.ru'}
 	};
 
-	var current_site = 'test';
+	var current_site = 'lenta.ru';
 	
 	this.setCurrentSite = function(site_name) {
 		if (site_name in sites)
@@ -34,7 +34,7 @@ app.launcher = new function() {
 
 	this.onDateSelected = function() {
 		console.log(self.date());
-		// TODO : add date filter
+		self.show();
 	};
 
 	this.show = function() {
@@ -57,7 +57,7 @@ app.launcher = new function() {
 			select_month    : false,
 			position		: 'right',
 			hide_on_select	: true,
-			min             : new Date(2014, 7, 5, 0, 0, 0, 0),
+			min             : new Date(2014, 7, 13, 0, 0, 0, 0),
 			max             : new Date(),
 			selected        : true,
 			date            : today,
@@ -76,48 +76,45 @@ app.launcher = new function() {
 	};
 
 	this.buildChart = function(data){
-		console.log(data)
-		$(document.getElementById('container')).highcharts({
-			chart: {
-				type: 'bar'
-			},
-			title: {
-				text: 'pew-pew'
-			},
-			subtitle: {
-				text: ''
-			},
-			xAxis: {
-				categories: data.results[0].data.words,
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: 'Word occurrences',
-					align: 'high'
+		var graph = (0 == data.results.length)
+			? {	title: { text: 'No data for ' + current_site + ' on ' + self.date() } }
+			: {
+				chart: {
+					type: 'bar'
 				},
-				labels: {
-					overflow: 'justify'
-				}
-			},
-			tooltip: {
-				valueSuffix: ' word occurrences'
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
+				title: {
+					text: current_site + ' on ' + self.date()
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					categories: data.results[0].data.words,
+					title: {
+						text: null
 					}
-				}
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{ name : 'Word occurences', data : data.results[0].data.occurrences }]
-		}).bind(this);
+				},
+				yAxis: {
+					title: {
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify'
+					}
+				},
+				plotOptions: {
+					bar: {
+						dataLabels: {
+							enabled: true
+						}
+					}
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{ name : 'Число вхождений', data : data.results[0].data.occurrences }]
+			};
+		$(document.getElementById('container')).highcharts(graph).bind(this);
 	};
 }();
 app.launcher.init();
