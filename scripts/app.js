@@ -29,6 +29,7 @@ app.launcher = new function() {
 	this.onSiteSelected = function() {
 		var site_select = document.getElementById("site_select");
 		self.setCurrentSite(site_select.options[site_select.selectedIndex].value);
+		window.history.replaceState('Object', 'Title', '/another-new-url');
 		self.show();
 	};
 
@@ -37,7 +38,36 @@ app.launcher = new function() {
 		self.show();
 	};
 
+	this.parse_params = function() {
+		var query_string = {};
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		for (var i=0; i < vars.length; i++) {
+			var pair = vars[i].split("=");
+    		// If first entry with this name
+    		if (typeof query_string[pair[0]] === "undefined") {
+      			query_string[pair[0]] = pair[1];
+    		// If second entry with this name
+    		} else if (typeof query_string[pair[0]] === "string") {
+      			var arr = [ query_string[pair[0]], pair[1] ];
+      			query_string[pair[0]] = arr;
+    			// If third or later entry with this name
+			} else {
+				query_string[pair[0]].push(pair[1]);
+    		}
+  		} 
+    	return query_string;
+	};
+
+	this.site_from_params = function() {
+		var params = parse_params();
+		current_site = params['site'];
+		self.setCurrentSite(current_site);
+		self.show();
+	};
+
 	this.show = function() {
+		console.log(window.location.search);
 		$.ajax({
 			type: "GET",
 			url: data_source + self.db_index(),
