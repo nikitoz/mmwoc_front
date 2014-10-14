@@ -18,24 +18,35 @@ app.launcher = new function() {
 	};
 
 	var current_site = 'lenta.ru';
+	var current_date = new Date();
+
+	var this_site = "file:///home/nikita/mmwoc/mmwoc_front/index.html";//watmedia.org/index.html
 	
 	this.setCurrentSite = function(site_name) {
+		if (typeof site_name === 'undefined')
+			return;
 		if (site_name in sites)
-			current_site = site_name
+			current_site = site_name;
 		else
 			console.log('Site name ' + site_name + ' is not supported');
 	};
 
-	this.onSiteSelected = function() {
-		var site_select = document.getElementById("site_select");
-		self.setCurrentSite(site_select.options[site_select.selectedIndex].value);
-		window.history.replaceState('Object', 'Title', '/another-new-url');
-		self.show();
+	this.strToIsoDate = function(datestr) {
+		if (typeof datestr === 'undefined')
+			return;
+		var pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+		return new Date(datestr.replace(pattern,'$3-$2-$1'));
 	};
 
-	this.onDateSelected = function() {
-		console.log(self.date());
-		self.show();
+	this.setCurrentDate = function(datestr) {
+		current_date = self.strToIsoDate(datestr);
+	};
+
+	this.onOpenUrl = function() {
+		var site_select = document.getElementById("site_select");
+		var sitename = site_select.options[site_select.selectedIndex].value;
+		var date = self.date();
+		location.href = this_site + "?x="+sitename+"&y="+date;
 	};
 
 	this.parse_params = function() {
@@ -60,10 +71,9 @@ app.launcher = new function() {
 	};
 
 	this.site_from_params = function() {
-		var params = parse_params();
-		current_site = params['site'];
-		self.setCurrentSite(current_site);
-		self.show();
+		var params = self.parse_params();
+		self.setCurrentSite(params['x']);
+		self.setCurrentDate(params['y']);
 	};
 
 	this.show = function() {
@@ -73,13 +83,20 @@ app.launcher = new function() {
 			url: data_source + self.db_index(),
 			success: this.buildChart,
 			dataType: 'jsonp',
-			error: function(){
+			error : function() {
 				console.log("There is some problem getting data from server");
 			},
 		});
 	};
 
 	this.init = function() {
+		console.log("init");
+		console.log(current_site);
+		console.log(current_date);
+		self.site_from_params();
+		console.log(current_site);
+		console.log(current_date);
+		document.getElementById("site_select").value = current_site;
 		var today = new Date();
 		var pick = $('.datepick').pickmeup({
 			format          : 'd.m.Y',
@@ -90,8 +107,8 @@ app.launcher = new function() {
 			min             : new Date(2014, 7, 13, 0, 0, 0, 0),
 			max             : new Date(),
 			selected        : true,
-			date            : today,
-			change			: this.onDateSelected,
+			date            : current_date,
+			change			: this.onOpenUrl,
 		});
 		$('.datepick').val(this.date());
 	};
@@ -105,7 +122,7 @@ app.launcher = new function() {
 			+ self.date().replace(/\./g, '_') + '"}');
 	};
 
-	this.buildChart = function(data){
+	this.buildChart = function(data) {
 		var graph = (0 == data.results.length)
 			? {	title: { text: 'No data for ' + current_site + ' on ' + self.date() } }
 			: {
