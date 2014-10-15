@@ -20,6 +20,8 @@ app.launcher = new function() {
 	var current_site = 'lenta.ru';
 	var current_date = new Date();
 
+	var content_style = "min-width: 310px; max-width: 1920px; margin: 0 auto;";
+
 	var this_site = "http://watmedia.org/index.html";
 	
 	this.setCurrentSite = function(site_name) {
@@ -161,6 +163,8 @@ app.launcher = new function() {
 				},
 				series: [{ name : 'Число вхождений', data : data.occurrences }]
 			};
+		var h = data.occurrences.length == 100 ? 'height: 2000px' : 'height: 10000px';
+		document.getElementById('container').setAttribute("style", content_style + h);
 		$(document.getElementById('container')).highcharts(graph).bind(this);
 	};
 }();
