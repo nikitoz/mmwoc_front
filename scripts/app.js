@@ -2,7 +2,7 @@ var app = app || {};
 
 app.launcher = new function() {
 	var self = this;
-	var data_source = 'http://flipflop.systems:27080/mmwocdb/graph/_find?';
+	var data_source = 'http://flipflop.systems:8080/';
 	var sites = {
 		'test'           : { url : 'nikitoz.github.io/mmwoc_testpage/'},
 		'lenta.ru'       : { url : 'lenta.ru' },
@@ -80,8 +80,8 @@ app.launcher = new function() {
 		console.log(window.location.search);
 		$.ajax({
 			type: "GET",
-			url: data_source + self.db_index(),
-			success: this.buildChart,
+			url: data_source + self.db_index_twisted(),
+			success: $.proxy(this.buildChart, this),
 			dataType: 'jsonp',
 			error : function() {
 				console.log("There is some problem getting data from server");
@@ -90,12 +90,7 @@ app.launcher = new function() {
 	};
 
 	this.init = function() {
-		console.log("init");
-		console.log(current_site);
-		console.log(current_date);
 		self.site_from_params();
-		console.log(current_site);
-		console.log(current_date);
 		document.getElementById("site_select").value = current_site;
 		var today = new Date();
 		var pick = $('.datepick').pickmeup({
@@ -122,8 +117,13 @@ app.launcher = new function() {
 			+ self.date().replace(/\./g, '_') + '"}');
 	};
 
+	this.db_index_twisted = function() {
+		return encodeURI('?_id='+ sites[current_site].url.replace(/\//g, '').replace(/\./g, '') + '_'
+			+ self.date().replace(/\./g, '_'));
+	};
+
 	this.buildChart = function(data) {
-		var graph = (0 == data.results.length)
+		var graph = (0 == data.length)
 			? {	title: { text: 'No data for ' + current_site + ' on ' + self.date() } }
 			: {
 				chart: {
@@ -136,7 +136,7 @@ app.launcher = new function() {
 					text: ''
 				},
 				xAxis: {
-					categories: data.results[0].data.words,
+					categories: data.words,
 					title: {
 						text: null
 					}
@@ -159,7 +159,7 @@ app.launcher = new function() {
 				credits: {
 					enabled: false
 				},
-				series: [{ name : 'Число вхождений', data : data.results[0].data.occurrences }]
+				series: [{ name : 'Число вхождений', data : data.occurrences }]
 			};
 		$(document.getElementById('container')).highcharts(graph).bind(this);
 	};
