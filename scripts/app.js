@@ -13,7 +13,7 @@ app.launcher = new function() {
 		'kp.ru'          : { url : 'kp.ru' },
 		'lifenews.ru'    : { url : 'lifenews.ru'},
 		'russian.rt.com' : { url : 'russian.rt.com'},
-		'itar-tass'      : { url : 'itar-tass.com'},
+		'itar-tass.com'  : { url : 'itar-tass.com'},
 		'pravda.ru'      : { url : 'pravda.ru'}
 	};
 
