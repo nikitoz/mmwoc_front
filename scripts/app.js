@@ -20,7 +20,7 @@ app.launcher = new function() {
 	var current_site = 'lenta.ru';
 	var current_date = new Date();
 
-	var this_site = "watmedia.org/index.html";
+	var this_site = "http://watmedia.org/index.html";
 	
 	this.setCurrentSite = function(site_name) {
 		if (typeof site_name === 'undefined')
